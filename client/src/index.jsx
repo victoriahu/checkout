@@ -118,6 +118,7 @@ class OnF1 extends React.Component {
     }
 
     submitAccounts(e) {
+        // debugger;
         // e.preventDefault();
         console.log("submitting ur account deets");
 
@@ -141,7 +142,7 @@ class OnF1 extends React.Component {
                 password: ''
             })
         })
-
+        
     }
 
     handleChangeName(event) {
@@ -164,7 +165,7 @@ class OnF1 extends React.Component {
     
     render() {
         return (
-            <form onSubmit = {()=> {this.submitAccounts(); props.gotoF2();}}>
+            <form onSubmit = {()=> {this.submitAccounts(); this.props.gotoF2()}}>
                 <label>Name: 
                 <input type="text" name="name" value={this.state.name} onChange={this.handleChangeName}/>
                 </label>
