@@ -10,7 +10,7 @@ class App extends React.Component {
             onF1: false,
             onF2: false,
             onF3: false,
-            ConfirmationPage: false
+            ConfirmationPage: false, 
         }
         this.gotoF1 = this.gotoF1.bind(this);
         this.gotoF2 = this.gotoF2.bind(this);
@@ -42,6 +42,7 @@ class App extends React.Component {
         )
     }
     gotoF2() {
+        
         this.setState(
             {
                 checkout: false,
@@ -102,15 +103,82 @@ const Blank = () => {
     )
 }
 
-const OnF1 = (props) => {
-    return (
-        <div>
-            <div>name</div>
-            <div>email</div>
-            <div>password</div>
-            <button onClick = {props.gotoF2}>Next</button>
-        </div>
-    )
+class OnF1 extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            name: '',
+            email: '',
+            password: ''
+        };
+        this.handleChangeName = this.handleChangeName.bind(this);
+        this.handleChangeEmail = this.handleChangeEmail.bind(this);
+        this.handleChangePassword = this.handleChangePassword.bind(this);
+        this.submitAccounts = this.submitAccounts.bind(this);
+    }
+
+    submitAccounts(e) {
+        // e.preventDefault();
+        console.log("submitting ur account deets");
+
+        const account = {
+            name: this.state.name,
+            email: this.state.email,
+            password: this.state.password
+        }
+        console.log("account data", account);
+
+        fetch('/accounts', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json; charset = utf-8',
+            },
+            body: JSON.stringify(account),
+        }).then(() => {
+            this.setState({
+                name: '',
+                email: '',
+                password: ''
+            })
+        })
+
+    }
+
+    handleChangeName(event) {
+        this.setState({
+            name: event.target.value
+        });
+    }
+
+    handleChangeEmail(event) {
+        this.setState({
+            email: event.target.value
+        });
+    }
+
+    handleChangePassword(event) {
+        this.setState({
+            password: event.target.value
+        });
+    }
+    
+    render() {
+        return (
+            <form onSubmit = {()=> {this.submitAccounts(); props.gotoF2();}}>
+                <label>Name: 
+                <input type="text" name="name" value={this.state.name} onChange={this.handleChangeName}/>
+                </label>
+                <label> Email: 
+                <input type="text" name="email" value={this.state.email} onChange={this.handleChangeEmail}/>
+                </label>
+                <label> Password:
+                <input type="text" name="password" value={this.state.password} onChange={this.handleChangePassword}/>
+                </label>
+                <button type="submit">Next</button>
+            </form>
+        )
+    }
+    
 }
 
 const OnF2 = (props) => {
