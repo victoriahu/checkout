@@ -12,42 +12,96 @@ class App extends React.Component {
             ConfirmationPage: false
         }
         this.gotoF1 = this.gotoF1.bind(this);
+        this.gotoF2 = this.gotoF2.bind(this);
+        this.gotoF3 = this.gotoF3.bind(this);
+        this.gotoConfirmationPage = this.gotoConfirmationPage.bind(this);
+
+    }
+    
+    changeComponent() {
+        var components = [onF1, onF2, onF3, ConfirmationPage];
+        
+        i++;
     }
     gotoF1() {
         this.setState(
-            {onF1: true}
+            {
+                onF1: true,
+                onF2: false,
+                onF3: false,
+                ConfirmationPage: false
+            }
+        )
+    }
+    gotoF2() {
+        this.setState(
+            {
+                onF1: false,
+                onF2: true,
+                onF3: false,
+                ConfirmationPage: false
+            }
+        )
+    }
+    gotoF3() {
+        this.setState(
+            {
+                onF1: false,
+                onF2: false,
+                onF3: true,
+                ConfirmationPage: false
+            }
+        )
+    }
+    gotoConfirmationPage() {
+        this.setState(
+            {
+                onF1: false,
+                onF2: false,
+                onF3: false,
+                ConfirmationPage: true
+            }
         )
     }
     render() {
         return (
             <div>
-                <h1>{(!this.state.onF1) ? <Checkout /> : < OnF1 />}</h1>
-                <h1>{(!this.state.onF2) ? <Checkout /> : < OnF2 />}</h1>
+                <h1>{(!this.state.onF1) ? <Checkout gotoF1 = {this.gotoF1}/> : < OnF1 gotoF2 = {this.gotoF2}/>}</h1>
+                <h1>{(!this.state.onF2) ? <Blank /> : < OnF2 gotoF3 = {this.gotoF3}/>}</h1>
+                <h1>{(!this.state.onF3) ? <Blank /> : < OnF3 gotoConfirmationPage = {this.gotoConfirmationPage}/>}</h1>
+                <h1>{(!this.state.ConfirmationPage) ? <Blank /> : < ConfirmationPage />}</h1>
             </div>
         )
     }
 }
 
-const Checkout = () => {
+const Checkout = (props) => {
     return (
         <div>
             <h4>Checkout</h4>
-            <button onClick = {this.gotoF1}>Next</button>
+            <button onClick = {props.gotoF1}>Next</button>
         </div>
     )
 }
 
-const OnF1 = () => {
+const Blank = () => {
+    return (
+        <div>asdasdas</div>
+    )
+}
+
+const OnF1 = (props) => {
     return (
         <div>
             <div>name</div>
             <div>email</div>
             <div>password</div>
+            <button onClick = {props.gotoF2}>Next</button>
         </div>
     )
 }
 
-const OnF2 = () => {
+const OnF2 = (props) => {
     return (
         <div>
             <h4>Address</h4>
@@ -57,11 +111,12 @@ const OnF2 = () => {
             <div>State</div>
             <div>Zip Code</div>
             <div>Phone Number</div>
+            <button onClick = {props.gotoF3}>Next</button>
         </div>
     )
 }
 
-const OnF3 = () => {
+const OnF3 = (props) => {
     return (
         <div>
             <h4>Credit Card</h4>
@@ -69,15 +124,18 @@ const OnF3 = () => {
             <div>Exp date</div>
             <div>CVV</div>
             <div>Billing Zip Code</div>
+            <button onClick = {props.gotoConfirmationPage}>Next</button>
         </div>
     )
 }
 
-const ConfirmationPage = () => {
+const ConfirmationPage = (props) => {
     return (
-        <div>F1 Data</div>
-        <div>F2 Data</div>
-        <div>F3 Data</div>
+        <div>
+            <div>F1 Data</div>
+            <div>F2 Data</div>
+            <div>F3 Data</div>
+        </div>
     )
 }
 
