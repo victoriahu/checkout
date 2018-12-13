@@ -16,13 +16,19 @@ class App extends React.Component {
         this.gotoF2 = this.gotoF2.bind(this);
         this.gotoF3 = this.gotoF3.bind(this);
         this.gotoConfirmationPage = this.gotoConfirmationPage.bind(this);
-
+        this.checkout = this.checkout.bind(this);
     }
     
-    changeComponent() {
-        var components = [onF1, onF2, onF3, ConfirmationPage];
-        
-        i++;
+    checkout() {
+        this.setState(
+            {
+                checkout: true,
+                onF1: false,
+                onF2: false,
+                onF3: false,
+                ConfirmationPage: false
+            }
+        )
     }
     gotoF1() {
         this.setState(
@@ -75,7 +81,7 @@ class App extends React.Component {
                 <h1>{(!this.state.onF1) ? <Blank /> : < OnF1 gotoF2 = {this.gotoF2}/>}</h1>
                 <h1>{(!this.state.onF2) ? <Blank /> : < OnF2 gotoF3 = {this.gotoF3}/>}</h1>
                 <h1>{(!this.state.onF3) ? <Blank /> : < OnF3 gotoConfirmationPage = {this.gotoConfirmationPage}/>}</h1>
-                <h1>{(!this.state.ConfirmationPage) ? <Blank /> : < ConfirmationPage />}</h1>
+                <h1>{(!this.state.ConfirmationPage) ? <Blank /> : < ConfirmationPage checkout = {this.checkout}/>}</h1>
             </div>
         )
     }
@@ -141,6 +147,7 @@ const ConfirmationPage = (props) => {
             <div>F1 Data</div>
             <div>F2 Data</div>
             <div>F3 Data</div>
+            <button onClick = {props.checkout}>Check Out</button>
         </div>
     )
 }
