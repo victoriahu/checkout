@@ -6,6 +6,7 @@ class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            checkout: true,
             onF1: false,
             onF2: false,
             onF3: false,
@@ -26,6 +27,7 @@ class App extends React.Component {
     gotoF1() {
         this.setState(
             {
+                checkout: false,
                 onF1: true,
                 onF2: false,
                 onF3: false,
@@ -36,6 +38,7 @@ class App extends React.Component {
     gotoF2() {
         this.setState(
             {
+                checkout: false,
                 onF1: false,
                 onF2: true,
                 onF3: false,
@@ -46,6 +49,7 @@ class App extends React.Component {
     gotoF3() {
         this.setState(
             {
+                checkout: false,
                 onF1: false,
                 onF2: false,
                 onF3: true,
@@ -56,6 +60,7 @@ class App extends React.Component {
     gotoConfirmationPage() {
         this.setState(
             {
+                checkout: false,
                 onF1: false,
                 onF2: false,
                 onF3: false,
@@ -66,7 +71,8 @@ class App extends React.Component {
     render() {
         return (
             <div>
-                <h1>{(!this.state.onF1) ? <Checkout gotoF1 = {this.gotoF1}/> : < OnF1 gotoF2 = {this.gotoF2}/>}</h1>
+                <h1>{(!this.state.checkout) ? <Blank /> : < Checkout gotoF1 = {this.gotoF1}/>}</h1>
+                <h1>{(!this.state.onF1) ? <Blank /> : < OnF1 gotoF2 = {this.gotoF2}/>}</h1>
                 <h1>{(!this.state.onF2) ? <Blank /> : < OnF2 gotoF3 = {this.gotoF3}/>}</h1>
                 <h1>{(!this.state.onF3) ? <Blank /> : < OnF3 gotoConfirmationPage = {this.gotoConfirmationPage}/>}</h1>
                 <h1>{(!this.state.ConfirmationPage) ? <Blank /> : < ConfirmationPage />}</h1>
@@ -86,7 +92,7 @@ const Checkout = (props) => {
 
 const Blank = () => {
     return (
-        <div>asdasdas</div>
+        <div></div>
     )
 }
 
