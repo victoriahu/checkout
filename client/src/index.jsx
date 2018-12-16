@@ -123,7 +123,7 @@ class OnF1 extends React.Component {
         console.log("submitting ur account deets");
 
         const account = {
-            name: this.state.name,
+            username: this.state.name,
             email: this.state.email,
             password: this.state.password
         }
@@ -210,15 +210,58 @@ const OnF3 = (props) => {
     )
 }
 
-const ConfirmationPage = (props) => {
-    return (
-        <div>
-            <div>F1 Data</div>
-            <div>F2 Data</div>
-            <div>F3 Data</div>
-            <button onClick = {props.checkout}>Check Out</button>
-        </div>
-    )
-}
+class ConfirmationPage extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            username: '',
+            email: '',
+        }
+    }
+    componentDidMount() {
+        fetch("/confirmation", {
+            method: 'GET',
+            headers: new Headers(),
+            mode: 'cors',
+            cache: 'default'
+        })
+        //make sure of format being sent back
+            .then(res => res.json())
+            .then(result => {
+                // console.log("fetch request made");
+                // console.log("typeof result", typeof result);
+                // console.log(result);
+                // console.log("username", result[result.length -1].username);
+                // console.log(this.state);
+                var usrnme = String(result[result.length -1].username);
+                var eml = String(result[result.length -1].email);
+                this.setState({
+                    username: usrnme, 
+                    email: eml
+                });
+            },
+            (error) => {
+                this.setState({
+                    username: 'error',
+                    email: 'error'
+                });
+            }
+        )
+    }
+    
+    render() {
+        return (
+            <div>
+                <h3>Username:</h3>
+                <h4>{this.state.username}</h4>
+                <h3>Email:</h3>
+                <h4>{this.state.email}</h4>
+                <div>F2 Data</div>
+                <div>F3 Data</div>
+                <button onClick = {this.props.checkout}>Check Out</button>
+            </div>
+        )
+    }
+} 
 
 ReactDOM.render(<App />, document.getElementById("app"));
