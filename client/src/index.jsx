@@ -182,19 +182,110 @@ class OnF1 extends React.Component {
     
 }
 
-const OnF2 = (props) => {
-    return (
-        <div>
-            <h4>Address</h4>
-            <div>Line 1</div>
-            <div>Line 2</div>
-            <div>City</div>
-            <div>State</div>
-            <div>Zip Code</div>
-            <div>Phone Number</div>
-            <button onClick = {props.gotoF3}>Next</button>
-        </div>
-    )
+class OnF2 extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            lineOne: '',
+            lineTwo: '',
+            city: '',
+            state: '',
+            zip: '',
+            phonenumber: ''
+        }
+        this.LineOneOnChange = this.LineOneOnChange.bind(this);
+        this.lineTwoOnChange = this.lineTwoOnChange.bind(this);
+        this.submitForm = this.submitForm.bind(this);
+        this.changeCity = this.changeCity.bind(this);
+        this.changeState = this.changeState.bind(this);
+        this.changeZip = this.changeZip.bind(this);
+        this.changePN = this.changePN.bind(this);
+    }
+    LineOneOnChange(e) {
+        this.setState({
+            lineOne: e.target.value
+        })
+        console.log(this.state);
+    }
+    lineTwoOnChange(e) {
+        this.setState({
+            lineTwo: e.target.value
+        })
+        console.log(this.state);
+    }
+    
+    changeCity(e) {
+        this.setState({
+            city: e.target.value
+        })
+    }
+
+    changeState(e) {
+        this.setState({
+            state: e.target.value
+        })
+    }
+    
+    changeZip(e) {
+        this.setState({
+            zip: e.target.value
+        })
+    }
+    changePN(e) {
+        this.setState({
+            phonenumber: e.target.value
+        })
+    }
+
+    submitForm(e) {
+        var data = {
+            lineOne: this.state.lineOne,
+            lineTwo: this.state.lineTwo,
+            city: this.state.city,
+            zip: this.state.zip,
+            state: this.state.state,
+            phonenumber: this.state.phonenumber
+       };
+       console.log("submit form is working. data", data);
+
+        fetch('/address', {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(res => res.json())
+        .then(response => console.log('Success: ', JSON.stringify(response)))
+        .catch(error => console.log('Error: ', error));
+    }
+    render() {
+        return (
+            <form onSubmit = {() => {this.submitForm(); this.props.gotoF3(); }}>
+                <h4>Address</h4>
+                <label> Line One: 
+                <input type = "text" onChange = {this.LineOneOnChange} value= {this.state.lineOne}/>
+                </label>
+                <br></br>
+                <label> Line Two:
+                    <input type="text" value = {this.state.lineTwo} onChange = {this.lineTwoOnChange} />
+                </label>
+                <br></br>
+                <label> City
+                    <input type = "text" value = {this.state.city} onChange = {this.changeCity} />
+                </label>
+                <label> State
+                    <input type = "text" value = {this.state.state} onChange = {this.changeState}></input>
+                </label>
+                <label> Zip Code
+                    <input type = "text" value = {this.state.zip} onChange = {this.changeZip}></input>
+                </label>
+                <label> Phone Number
+                    <input type = "text" value = {this.state.phonenumber} onChange = {this.changePN}></input>
+                </label>
+                <button type="submit">Next</button>
+            </form>
+        )
+    }
 }
 
 const OnF3 = (props) => {
@@ -216,6 +307,12 @@ class ConfirmationPage extends React.Component {
         this.state = {
             username: '',
             email: '',
+            lineOne: '',
+            lineTwo: '',
+            city: '',
+            state: '',
+            zip: '',
+            pn: ''
         }
     }
     componentDidMount() {
@@ -235,9 +332,16 @@ class ConfirmationPage extends React.Component {
                 // console.log(this.state);
                 var usrnme = String(result[result.length -1].username);
                 var eml = String(result[result.length -1].email);
+                
                 this.setState({
                     username: usrnme, 
-                    email: eml
+                    email: eml, 
+                    lineOne: String(result[result.length -1].lineOne),
+                    lineTwo: String(result[result.length -1].lineTwo),
+                    city: String(result[result.length -1].city),
+                    state: String(result[result.length -1].addressState),
+                    zip: String(result[result.length -1].zip),
+                    pn: String(result[result.length -1].phone_number)
                 });
             },
             (error) => {
@@ -256,8 +360,18 @@ class ConfirmationPage extends React.Component {
                 <h4>{this.state.username}</h4>
                 <h3>Email:</h3>
                 <h4>{this.state.email}</h4>
-                <div>F2 Data</div>
-                <div>F3 Data</div>
+                <h3>Line One:</h3>
+                <div>{this.state.lineOne}</div>
+                <h3>Line Two:</h3>
+                <div>{this.state.lineTwo}</div>
+                <h3>City:</h3>
+                <div>{this.state.city}</div>
+                <h3>State:</h3>
+                <div>{this.state.state}</div>
+                <h3>Zip:</h3>
+                <div>{this.state.zip}</div>
+                <h3>Phone Number:</h3>
+                <div>{this.state.pn}</div>
                 <button onClick = {this.props.checkout}>Check Out</button>
             </div>
         )

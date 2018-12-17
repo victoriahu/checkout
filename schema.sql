@@ -10,14 +10,16 @@ CREATE TABLE account (
 );
 
 CREATE TABLE account_address (
-    asid INT,
+    address_id INT AUTO_INCREMENT,
+    parent_id INT,
     lineOne varchar(50),
     lineTwo varchar(50),
     city varchar(50),
     addressState varchar(50),
     zip varchar(50),
-    pw varchar(50),
-    FOREIGN KEY (asid)
+    phone_number varchar(50),
+    primary key (address_id),
+    FOREIGN KEY (parent_id)
         REFERENCES account(account_id)
 );
 
